@@ -34,9 +34,13 @@ impl Block {
     }
 
     pub fn calculate_hash(&self) -> String {
+        let mut transaction_str = String::new();
+        for tx in &self.transactions {
+            transaction_str.push_str(&tx.to_string());
+        }
         let data = format!(
-            "{}{}{:?}{}{}",
-            self.index, self.timestamp, self.transactions, self.previous_hash, self.nonce
+            "{}{}{}{}{}",
+            self.index, self.timestamp, transaction_str, self.previous_hash, self.nonce
         );
         let mut hasher = Sha256::new();
         hasher.update(data.as_bytes());

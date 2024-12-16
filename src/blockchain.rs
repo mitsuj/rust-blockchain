@@ -1,6 +1,7 @@
 use crate::block::Block;
 use crate::mining::mine_block;
 use crate::transaction::Transaction;
+use log::error;
 
 // generating first block/ genesis block
 pub fn generate_genesis_block() -> Block {
@@ -31,12 +32,12 @@ pub fn is_chain_valid(chain: &[Block]) -> bool {
         let calculated_hash = current_block.calculate_hash();
 
         if current_block.hash != calculated_hash {
-            println!("Invalid hash for block index {}", current_block.index);
+            error!("Invalid hash for block index {}", current_block.index);
             return false;
         }
 
         if current_block.previous_hash != previous_block.hash {
-            println!(
+            error!(
                 "Invalid previous hash for block index {}",
                 current_block.index
             );

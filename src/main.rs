@@ -3,7 +3,10 @@ mod blockchain;
 mod mining;
 mod transaction;
 use chrono::Utc;
+use log::info;
 fn main() {
+    env_logger::init();
+
     let mut chain = vec![blockchain::generate_genesis_block()];
     let difficulty = 4;
 
@@ -20,6 +23,7 @@ fn main() {
         Utc::now().timestamp(),
     );
 
+    info!("Creating block 1");
     let block1 = blockchain::generate_next_block(&chain[0], vec![transaction1], difficulty);
 
     chain.push(block1);
@@ -31,16 +35,17 @@ fn main() {
         Utc::now().timestamp(),
     );
 
+    info!("Creating block 2");
     let block2 =
         blockchain::generate_next_block(&chain[1], vec![transaction2, transaction3], difficulty);
 
     chain.push(block2);
 
     for block in &chain {
-        println!("Block: {block:?}")
+        info!("Block: {block:?}")
     }
 
-    println!("Chain is valid: {}", blockchain::is_chain_valid(&chain));
+    info!("Chain is valid: {}", blockchain::is_chain_valid(&chain));
 
     let mut invalid_block = chain[2].clone();
     invalid_block
@@ -53,7 +58,7 @@ fn main() {
         ));
     chain[2] = invalid_block;
 
-    println!(
+    info!(
         "Chain is valid after tampering: {}",
         blockchain::is_chain_valid(&chain)
     );

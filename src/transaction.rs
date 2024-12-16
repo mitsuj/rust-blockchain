@@ -1,3 +1,5 @@
+use std::fmt;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -16,5 +18,15 @@ impl Transaction {
             amount,
             timestamp,
         }
+    }
+}
+
+impl fmt::Display for Transaction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}:{}:{}:{}",
+            self.sender, self.receiver, self.amount, self.timestamp
+        )
     }
 }
