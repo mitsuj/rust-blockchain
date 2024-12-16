@@ -1,15 +1,25 @@
 use crate::block::Block;
 use crate::mining::mine_block;
+use crate::transaction::Transaction;
 
 // generating first block/ genesis block
 pub fn generate_genesis_block() -> Block {
-    Block::new(0, String::from("Genesis Block"), String::from("0"), 0)
+    Block::new(0, vec![], String::from("0"), 0)
 }
 
 // creating a new block linked to last block
-pub fn generate_next_block(previous_block: &Block, data: String, difficulty: u32) -> Block {
+pub fn generate_next_block(
+    previous_block: &Block,
+    transactions: Vec<Transaction>,
+    difficulty: u32,
+) -> Block {
     let next_index = previous_block.index + 1;
-    mine_block(next_index, data, previous_block.hash.clone(), difficulty)
+    mine_block(
+        next_index,
+        transactions,
+        previous_block.hash.clone(),
+        difficulty,
+    )
 }
 
 // validate the entire blockchain
